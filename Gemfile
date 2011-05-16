@@ -3,12 +3,13 @@ source 'http://rubygems.org'
 gem 'rails', '3.0.0'
 
 gem 'sqlite3-ruby', '1.3.1', :require => 'sqlite3'
+gem 'webrat'
 
 group :development do
   gem 'autotest'
-  gem 'rspec-rails', '2.0.0.beta.18'
+  gem 'rspec-rails', '2.5.0'
 end
 
-group :test do
-  gem 'rspec', '2.0.0.beta.18'
+group :test do  
+  gem 'rspec', '2.5.0'
 end
