@@ -1,5 +1,5 @@
 # == Schema Information
-# Schema version: 20110613190455
+# Schema version: 20110613195303
 #
 # Table name: users
 #
@@ -9,6 +9,7 @@
 #  created_at         :datetime
 #  updated_at         :datetime
 #  encrypted_password :string(255)
+#  salt               :string(255)
 #
 
 class User < ActiveRecord::Base
@@ -30,27 +31,42 @@ class User < ActiveRecord::Base
                        :confirmation => true,
                        :length => { :within => 6..40 }
 
-#   before_save :encrypt_password
-#   
-#   def has_password?(submitted_password)
-#     encrypted_password == encrypt(submitted_password)
-#   end
-#   private
-#   
-#     def encrypt_password
-#       self.salt = make_salt if new_record?
-#       self.encrypted_password = encrypt(password)
+  before_save :encrypt_password
+  
+  def has_password?(submitted_password)
+    encrypted_password == encrypt(submitted_password)
+  end
+
+  class << self
+    def authenticate(email, submitted_password)
+      user = find_by_email(email)
+      return nil	if user.nil?
+      return user   if user.has_password?(submitted_password)
+#     (user && user.has_password?(submitted_password)) ? user : nil
+    end
+    
+#     def authenticate_with_salt(id, cookie_salt)
+#       user = find_by_id(id)
+#       (user && user.salt == cookie_salt) ? user : nil
 #     end
-#   
-#     def encrypt(string)
-#       secure_hash("#{salt}--#{string}")
-#     end
-#     
-#     def make_salt
-#       secure_hash("#{Time.now.utc}--#{password}")
-#     end
-#     
-#     def secure_hash(string)
-#       Digest::SHA2.hexdigest(string)
-#     end
+  end
+
+  private
+  
+    def encrypt_password
+      self.salt = make_salt if new_record?
+      self.encrypted_password = encrypt(password)
+    end
+  
+    def encrypt(string)
+     secure_hash("#{salt}--#{string}")
+    end
+    
+    def make_salt
+      secure_hash("#{Time.now.utc}--#{password}")
+    end
+    
+    def secure_hash(string)
+      Digest::SHA2.hexdigest(string)
+    end
 end
