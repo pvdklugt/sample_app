@@ -9,7 +9,7 @@ gem 'gravatar_image_tag', '0.1.0'
 group :development do
   gem 'autotest'
   gem 'rspec-rails', '2.5.0'
-  gem 'annotate-models', '1.0.4'
+  gem 'annotate', '2.4.0'
 end
 
 group :test do  
