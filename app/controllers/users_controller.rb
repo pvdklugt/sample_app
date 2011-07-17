@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
 
   def create
-#     raise params[:user].inspect
+    # raise params[:user].inspect
     @user = User.new(params[:user])
     if @user.save
       sign_in @user

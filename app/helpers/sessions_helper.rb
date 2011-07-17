@@ -1,7 +1,10 @@
 module SessionsHelper
 
   def sign_in(user)
-    cookies.permanent.signed[:remember_token] = [user.id, user.salt]
+    # cookies replaced with session (Exercise 9.6.2)
+    # Also see http://www.nimweb.it/web-development/ruby-on-rails-web-development/ruby-on-rails-tutorial-exercise-9-6-2-rails-session/
+    # cookies.permanent.signed[:remember_token] = [user.id, user.salt]
+    session[:remember_token] = [user.id, user.salt]  
     self.current_user = user
   end
   
@@ -18,7 +21,8 @@ module SessionsHelper
   end
   
   def sign_out
-    cookies.delete(:remember_token)
+    # cookies.delete(:remember_token)   # cookies replaced with session (Exercise 9.6.2)
+    session[:remember_token] = nil    
     #self niet verwijderen!
     self.current_user = nil  
   end
@@ -48,7 +52,9 @@ module SessionsHelper
     end
     
     def remember_token
-      cookies.signed[:remember_token] || [nil, nil]
+      # cookies replaced with session (Exercise 9.6.2)
+      # cookies.signed[:remember_token] || [nil, nil] 
+      session[:remember_token] || [nil, nil]  
     end
 
 #     def store_location
