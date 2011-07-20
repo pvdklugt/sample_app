@@ -1,4 +1,13 @@
 class UsersController < ApplicationController
+  before_filter :authenticate, :only => [:edit, :update]
+#   before_filter :authenticate, :except => [:show, :new, :create]
+#   before_filter :correct_user, :only => [:edit, :update]
+#   before_filter :admin_user,   :only => :destroy
+
+#   def index
+#     @users = User.paginate(:page => params[:page])
+#     @title = "All users"
+#   end
   
   def show
     @user = User.find(params[:id])
@@ -39,4 +48,26 @@ class UsersController < ApplicationController
       render 'edit'
     end
   end
+
+#   def destroy
+#     @user.destroy
+#     redirect_to users_path, :flash => { :success => "User destroyed." }
+#   end
+ 
+  private
+
+  def authenticate
+    deny_access unless signed_in?
+  end
+    
+#     def correct_user
+#       @user = User.find(params[:id])
+#       redirect_to(root_path) unless current_user?(@user)
+#     end
+#     
+#     def admin_user
+#       @user = User.find(params[:id])
+#       redirect_to(root_path) if !current_user.admin? || current_user?(@user)
+#     end
+
 end
