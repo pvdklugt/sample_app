@@ -1,5 +1,4 @@
 # == Schema Information
-# Schema version: 20110613195303
 #
 # Table name: users
 #
@@ -10,6 +9,7 @@
 #  updated_at         :datetime
 #  encrypted_password :string(255)
 #  salt               :string(255)
+#  admin              :boolean         default(FALSE)
 #
 
 class User < ActiveRecord::Base
@@ -70,3 +70,5 @@ class User < ActiveRecord::Base
       Digest::SHA2.hexdigest(string)
     end
 end
+
+
