@@ -52,8 +52,7 @@ class UsersController < ApplicationController
 
   def destroy
     session[:return_to] ||= request.referer
-    # @user.destroy
-    User.find(params[:id]).destroy
+    @user.destroy  #@user is created by the admin_user method
     # redirect_to users_path, :flash => { :success => "User destroyed." }
     redirect_to session[:return_to], :flash => { :success => "User destroyed." }
   end
