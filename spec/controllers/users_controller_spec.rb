@@ -250,7 +250,7 @@ describe UsersController do
     end
   end
   
-  describe "authentication of edit/update actions" do
+  describe "authentication of actions" do
     
     before(:each) do
       @user = Factory(:user)
@@ -286,6 +286,16 @@ describe UsersController do
         put :update, :id => @user, :user => {}
         response.should redirect_to(root_path)
       end
+      
+      it "should redirect to the root path for 'new'" do
+        get :new, :id => @user
+        response.should redirect_to(root_path) 
+      end
+      
+      it "should redirect to the root path for 'create'" do
+        post :create, :id => @user
+        response.should redirect_to(root_path) 
+      end      
     end
   end 
   
@@ -323,10 +333,11 @@ describe UsersController do
         end.should change(User, :count).by(-1)
       end
       
-      it "should redirect to the users page" do
+      it "should stay on the same page" do
+        referer = request.referer
         delete :destroy, :id => @user
         flash[:success].should =~ /destroyed/i
-        response.should redirect_to(users_path)
+        response.should redirect_to(referer)
       end
       
       it "should not be able to destroy itself" do

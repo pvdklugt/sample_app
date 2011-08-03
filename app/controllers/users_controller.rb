@@ -3,6 +3,8 @@ class UsersController < ApplicationController
 #   before_filter :authenticate, :except => [:show, :new, :create]
   before_filter :correct_user, :only => [:edit, :update]
   before_filter :admin_user,   :only => :destroy
+  
+  before_filter :not4users,    :only => [:new, :create]
 
   def index
     @users = User.paginate(:page => params[:page])
@@ -49,9 +51,11 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    session[:return_to] ||= request.referer
     # @user.destroy
     User.find(params[:id]).destroy
-    redirect_to users_path, :flash => { :success => "User destroyed." }
+    # redirect_to users_path, :flash => { :success => "User destroyed." }
+    redirect_to session[:return_to], :flash => { :success => "User destroyed." }
   end
  
   private
@@ -70,4 +74,8 @@ class UsersController < ApplicationController
       redirect_to(root_path) if !current_user.admin? || current_user?(@user)
     end
 
+    def not4users
+      message = "Action prohibited for signed-in users."
+      redirect_to root_path, :flash => { :notice => message } if signed_in?    
+    end  
 end
