@@ -39,6 +39,23 @@ class User < ActiveRecord::Base
     encrypted_password == encrypt(submitted_password)
   end
 
+  def feed
+      Micropost.where("user_id = ?", id)
+#     Micropost.from_users_followed_by(self)
+  end
+#   
+#   def following?(followed)
+#     relationships.find_by_followed_id(followed)
+#   end
+#   
+#   def follow!(followed)
+#     relationships.create!(:followed_id => followed.id)
+#   end
+#   
+#   def unfollow!(followed)
+#     relationships.find_by_followed_id(followed).destroy
+#   end
+
   class << self
     def authenticate(email, submitted_password)
       user = find_by_email(email)
