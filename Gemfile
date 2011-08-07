@@ -11,7 +11,8 @@ group :development do
   gem 'autotest'
   gem 'rspec-rails', '2.5.0'
   gem 'annotate', '2.4.0'
-  gem 'faker', '0.3.1'
+  gem 'faker', '0.3.1', :require => false
+
 end
 
 group :test do  
