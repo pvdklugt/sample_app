@@ -1,6 +1,11 @@
 class MicropostsController < ApplicationController
-  before_filter :authenticate
+  before_filter :authenticate, :only => [:create, :destroy]
   before_filter :authorized_user, :only => :destroy
+  
+  def index
+    # Exercise 11.5.7
+    redirect_to user_path(params[:user_id])
+  end
   
   def create
     @micropost = current_user.microposts.build(params[:micropost])

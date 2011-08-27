@@ -2,7 +2,10 @@ SampleApp::Application.routes.draw do
 
   # get "users/new"
   
-  resources :users
+  resources :users do
+    # Nested route (exercise 11.5.7)
+    resources :microposts, :only => [:index]
+  end
   resources :sessions,   :only => [:new, :create, :destroy]
   resources :microposts, :only => [:create, :destroy]
 

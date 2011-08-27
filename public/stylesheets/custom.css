@@ -198,21 +198,25 @@ h1.micropost {
 }
 
 table.microposts {
+  /* border-collapse req'd to show border-top above tr */
+  border-collapse:collapse; */
   margin-top: 1em;
 }
 
 table.microposts tr {
+  /* create a border-top accross the whole tr */
+  border-top: 1px solid #ccc;  
   height: 70px;
 }
 
 table.microposts tr td.gravatar {
-  border-top: 1px solid #ccc;
+  /* border-top: 1px solid #ccc; */
   vertical-align: top;
   width: 50px;
 }
 
 table.microposts tr td.micropost {
-  border-top: 1px solid #ccc;
+  /* border-top: 1px solid #ccc; */
   vertical-align: top;
   padding-top: 10px;
 }

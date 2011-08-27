@@ -13,5 +13,10 @@ module ApplicationHelper
   def logo
      image_tag("logo.png", :alt => "Sample App", :class => "round")
   end
-  
+
+#   def micropost_maxlen
+#     Micropost.validators_on(:content)[1].options[:maximum].to_s
+#     Micropost._validators[:content][1].options[:maximum].to_s
+#   end
+
 end

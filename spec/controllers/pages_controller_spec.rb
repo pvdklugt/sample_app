@@ -26,6 +26,19 @@ describe PagesController do
       get 'home'
       response.body.should_not =~ /<body>\s*<\/body>/
     end
+    
+    it "should show the right micropost count" do
+      @user = test_sign_in(Factory(:user))
+      # Test for 0 to 3 microposts
+      3.times do
+        get :home
+        response.should have_selector('span.microposts',
+           :content => @user.microposts.count.to_s << " micropost" << (@user.microposts.count != 1 ? "s" : ""))      
+        Factory(:micropost, :user => @user, :content => Factory.next(:content))               
+      end
+      get :home
+      response.should have_selector('span.microposts', :content => "3 microposts")
+    end
   end
 
   describe "GET 'contact'" do
