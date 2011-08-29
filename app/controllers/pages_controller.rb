@@ -5,9 +5,6 @@ class PagesController < ApplicationController
     if signed_in?      
       @micropost = Micropost.new
       @feed_items = current_user.feed.paginate(:page => params[:page])
-      # _validators works in rails console, but not here (returns nil)
-      @micropost_maxlen = @micropost._validators[:content][1].options[:maximum].to_s
-      @micropost_maxlen = '140'
     end
   end
 

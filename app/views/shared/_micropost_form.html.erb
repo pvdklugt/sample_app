@@ -1,10 +1,9 @@
 <%= form_for(@micropost, :html => {:name => 'microposts'}) do |f| %>
-  <% @micropost_maxlen = "140" if @micropost_maxlen.blank? %>
   <%= render 'shared/error_messages', :object => f.object %>
   <div class="field">
-    <%= f.text_area(:content, :onkeydown => "micropost_textcounter(" << @micropost_maxlen << ")",
-                                :onkeyup => "micropost_textcounter(" << @micropost_maxlen << ")") %>
-    <%= text_field_tag 'counter', @micropost_maxlen, :size => 3, :maxlength => 3, :readonly => true %>
+    <%= f.text_area(:content, :onkeydown => "micropost_textcounter(" << micropost_maxlen << ")",
+                                :onkeyup => "micropost_textcounter(" << micropost_maxlen << ")") %>
+    <%= text_field_tag 'counter', micropost_maxlen, :size => 3, :maxlength => 3, :readonly => true %>
     characters left<br>
   </div>
   <div class="actions">
