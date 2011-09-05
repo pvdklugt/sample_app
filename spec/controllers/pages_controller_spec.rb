@@ -11,33 +11,52 @@ describe PagesController do
   end
 
   describe "GET 'home'" do
-    it "should be successful" do
-      get 'home'
-      response.should be_success
-    end
-    
-    it "should have the rigth title" do
-      get 'home'
-      response.should have_selector("title",
-         :content => "#{@base_title} | Home")
-    end
-    
-    it "should have a non-blank body" do
-      get 'home'
-      response.body.should_not =~ /<body>\s*<\/body>/
-    end
-    
-    it "should show the right micropost count" do
-      @user = test_sign_in(Factory(:user))
-      # Test for 0 to 3 microposts
-      3.times do
-        get :home
-        response.should have_selector('span.microposts',
-           :content => @user.microposts.count.to_s << " micropost" << (@user.microposts.count != 1 ? "s" : ""))      
-        Factory(:micropost, :user => @user, :content => Factory.next(:content))               
+  
+    describe "when not signed in" do
+      it "should be successful" do
+        get 'home'
+        response.should be_success
       end
-      get :home
-      response.should have_selector('span.microposts', :content => "3 microposts")
+      
+      it "should have the rigth title" do
+        get 'home'
+        response.should have_selector("title",
+           :content => "#{@base_title} | Home")
+      end
+      
+      it "should have a non-blank body" do
+        get 'home'
+        response.body.should_not =~ /<body>\s*<\/body>/
+      end    
+    end
+
+    describe "when signed in" do
+      before(:each) do
+        @user = test_sign_in(Factory(:user))
+        other_user = Factory(:user, :email => Factory.next(:email))
+        other_user.follow!(@user)
+      end
+
+      it "should show the right micropost count" do
+        # Exercise 11.5.2 -> test for 0 to 3 microposts
+        # @user = test_sign_in(Factory(:user))
+        3.times do
+          get :home
+          response.should have_selector('span.microposts',
+             :content => @user.microposts.count.to_s << " micropost" << (@user.microposts.count != 1 ? "s" : ""))      
+          Factory(:micropost, :user => @user, :content => Factory.next(:content))               
+        end
+        get :home
+        response.should have_selector('span.microposts', :content => "3 microposts")
+      end
+      
+      it "should have the right follower/following counts" do
+        get :home
+        response.should have_selector('a', :href => following_user_path(@user),
+                                           :content => "0 following")
+        response.should have_selector('a', :href => followers_user_path(@user),
+                                           :content => "1 follower")
+      end
     end
   end
 
