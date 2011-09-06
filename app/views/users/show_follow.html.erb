@@ -16,7 +16,6 @@
       <% if @user.admin? %>Admin<% else%>User<% end %>      
       <br />
       <strong>URL</strong> <%= link_to user_path(@user), @user %><br />
-      <strong>Microposts</strong> <%= @user.microposts.count %>
       <%= render 'shared/stats' %>
       <% if @users.any? %>
         <% @users.each do |user| %>

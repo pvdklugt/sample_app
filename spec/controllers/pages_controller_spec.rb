@@ -39,23 +39,22 @@ describe PagesController do
 
       it "should show the right micropost count" do
         # Exercise 11.5.2 -> test for 0 to 3 microposts
-        # @user = test_sign_in(Factory(:user))
         3.times do
           get :home
-          response.should have_selector('span.microposts',
-             :content => @user.microposts.count.to_s << " micropost" << (@user.microposts.count != 1 ? "s" : ""))      
+          response.should have_selector('span.stat', :id => 'microposts', :content => @user.microposts.count.to_s)      
+          # :content => @user.microposts.count.to_s << " micropost" << (@user.microposts.count != 1 ? "s" : ""))      
           Factory(:micropost, :user => @user, :content => Factory.next(:content))               
         end
         get :home
-        response.should have_selector('span.microposts', :content => "3 microposts")
+        response.should have_selector('span.stat', :id => 'microposts', :content => @user.microposts.count.to_s)
       end
       
       it "should have the right follower/following counts" do
         get :home
         response.should have_selector('a', :href => following_user_path(@user),
-                                           :content => "0 following")
+                                           :content => "0")
         response.should have_selector('a', :href => followers_user_path(@user),
-                                           :content => "1 follower")
+                                           :content => "1")
       end
     end
   end
